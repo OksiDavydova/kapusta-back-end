@@ -6,6 +6,7 @@ const { colors } = require("./helpers");
 
 dotenv.config({ path: "./config/.env" });
 
+const authRouter = require("./routes/authRouter");
 const balanceRouter = require("./routes/balanceRouter");
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
+app.use("/api/v1", authRouter);
 app.use("/users", balanceRouter);
 
 app.use((req, res) => {
