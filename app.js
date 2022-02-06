@@ -7,8 +7,8 @@ const path = require("path");
 
 dotenv.config({ path: "./config/.env" });
 
-const balanceRouter = require("./routes/balanceRouter");
 const authRouter = require("./routes/authRouter");
+const balanceRouter = require("./routes/balanceRouter");
 
 const app = express();
 
@@ -18,6 +18,7 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
+app.use("/api/v1", authRouter);
 app.use("/users", balanceRouter);
 app.use("/auth", authRouter);
 app.use("/link", (req, res) => {
@@ -29,7 +30,6 @@ app.use((req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  // console.log("I am error: ", error);
   const statusCode = err.status || 500;
   const status = statusCode === 500 ? "fail" : "error";
   res.status(500).json({

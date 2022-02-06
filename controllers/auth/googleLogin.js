@@ -1,6 +1,7 @@
 const queryString = require("query-string");
 const axios = require("axios");
-// const URL = require("url");
+const { isExistUser, createUser } = require("../../services/auth");
+const User = require("../../models/User");
 
 exports.googleAuth = async (req, res) => {
   const stringifiedParams = queryString.stringify({
@@ -26,8 +27,6 @@ exports.googleRedirect = async (req, res) => {
 
   const code = urlParams.code;
 
-  // console.log("code: ", code);
-
   const tokenData = await axios({
     url: "https://oauth2.googleapis.com/token",
     method: "post",
@@ -40,8 +39,6 @@ exports.googleRedirect = async (req, res) => {
     },
   });
 
-  // console.log("tokenData.data.access_token: ", tokenData.data.access_token);
-
   const userData = await axios({
     url: "https://www.googleapis.com/oauth2/v2/userinfo",
     method: "get",
@@ -50,12 +47,14 @@ exports.googleRedirect = async (req, res) => {
     },
   });
 
-  // console.log("userData.data.email: ", userData.data.email);
-  // userData.data.email
+  const isUserExist = await isExistUser(userData.data.email);
 
-  return res.redirect(
-    `${process.env.FRONTEND_URL}?email=${userData.data.email}`
-    // `${process.env.FRONTEND_URL}?accessToken=${accessToken}&refreshToken=${refreshToken}&sectionId=${sectionID};
-    // 27.00`
-  );
+  if (!isUserExist) {
+    await createUser({ email: userData.data.email });
+  }
+
+  const currentUser = await User.findOne({ email: userData.data.email });
+
+  // переадресация по линку. Можем подставить любые данные
+  return res.redirect(`${process.env.FRONTEND_URL}?id=${currentUser.id}`);
 };
