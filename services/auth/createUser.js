@@ -8,7 +8,7 @@ const createUser = async (body) => {
   const { id, email } = newUser;
 
   const token = jwt.sign({ id: newUser.id }, TOKEN_SECRET_KEY, {
-    expiresIn: "24h",
+    expiresIn: "1h",
   });
 
   newUser.token = token;

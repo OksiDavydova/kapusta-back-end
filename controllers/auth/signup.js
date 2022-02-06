@@ -4,8 +4,8 @@ const { StatusCodes } = require("http-status-codes");
 const signup = async (req, res, next) => {
   try {
     const { email } = req.body;
-    const user = await isExistUser(email);
-    if (user) {
+    const existUser = await isExistUser(email);
+    if (!!existUser) {
       return res
         .status(StatusCodes.CONFLICT)
         .json({ code: StatusCodes.CONFLICT, message: "User is exist" });
@@ -16,7 +16,7 @@ const signup = async (req, res, next) => {
     return res.status(StatusCodes.CREATED).json({
       code: StatusCodes.CREATED,
       message: "User successfully created ",
-      data: newUser,
+      user: newUser,
     });
   } catch (error) {
     console.log(error.message);
