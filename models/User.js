@@ -10,7 +10,8 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
+      // если сделать пароль обезятельным - невозножно будет зайти через гугл
+      // required: [true, "Password is required"],
     },
     token: {
       type: String,
