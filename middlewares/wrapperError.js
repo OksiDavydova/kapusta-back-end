@@ -1,4 +1,4 @@
-const HttpCode = require("../lib/constants");
+const { HttpCode } = require("../lib/constants");
 
 const wrapperError = (fn) => async (req, res, next) => {
   try {
