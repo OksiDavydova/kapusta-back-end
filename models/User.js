@@ -1,5 +1,6 @@
 const { model, Schema } = require("mongoose");
 const bcryptjs = require("bcryptjs");
+const { randomUUID } = require("crypto");
 
 const userSchema = new Schema(
   {
@@ -15,6 +16,19 @@ const userSchema = new Schema(
     },
     token: {
       type: String,
+      default: null,
+    },
+    isVerify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      required: [true, "verificationToken is required"],
+      default: randomUUID(),
+    },
+    balance: {
+      type: Number,
       default: null,
     },
   },
