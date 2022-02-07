@@ -18,7 +18,6 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/v1/auth", authRouter);
-// app.use("/auth", authRouter);
 app.use("/link", (req, res) => {
   res.sendFile(path.join(__dirname, "public/index.html")); // стартовая страница. для запуска. потом удалить(поменять)
 });
