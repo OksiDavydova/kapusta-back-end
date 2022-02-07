@@ -2,8 +2,9 @@ const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const { colors } = require("./helpers");
 const path = require("path");
+const { colors } = require("./helpers");
+const { StatusCodes } = require("http-status-codes");
 
 dotenv.config({ path: "./config/.env" });
 
@@ -23,13 +24,18 @@ app.use("/link", (req, res) => {
 });
 
 app.use((req, res) => {
-  res.status(404).json({ status: "error", code: 404, message: "Not found" });
+  res.status(StatusCodes.NOT_FOUND).json({
+    status: "error",
+    code: StatusCodes.NOT_FOUND,
+    message: "Not found",
+  });
 });
 
 app.use((err, req, res, next) => {
-  const statusCode = err.status || 500;
-  const status = statusCode === 500 ? "fail" : "error";
-  res.status(500).json({
+  const statusCode = err.status || StatusCodes.INTERNAL_SERVER_ERROR;
+  const status =
+    statusCode === StatusCodes.INTERNAL_SERVER_ERROR ? "fail" : "error";
+  res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
     status: status,
     code: statusCode,
     message: err.message,

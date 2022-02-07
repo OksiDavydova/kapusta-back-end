@@ -1,4 +1,5 @@
-const HttpCode = require("../lib/constants");
+// const HttpCode = require("../lib/constants");
+const { StatusCodes } = require("http-status-codes");
 
 const wrapperError = (fn) => async (req, res, next) => {
   try {
@@ -13,9 +14,9 @@ const wrapperError = (fn) => async (req, res, next) => {
           message: err.message,
         });
       case "ValidationError":
-        return res.status(HttpCode.BAD_REQUEST).json({
+        return res.status(StatusCodes.BAD_REQUEST).json({
           status: "error",
-          code: HttpCode.BAD_REQUEST,
+          code: StatusCodes.BAD_REQUEST,
           message: err.message,
         });
       default:
