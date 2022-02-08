@@ -4,11 +4,11 @@ const { Categories } = require("../lib/constants");
 const transactionSchema = new Schema(
   {
     date: {
-      type: Number,
-      // max: Date.now(),
+      type: String,
+      length: 8,
       required: [true, "Введите дату"],
     },
-    name: {
+    discri: {
       type: String,
       required: [true, "Введите название"],
     },
