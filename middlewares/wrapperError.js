@@ -1,4 +1,3 @@
-// const HttpCode = require("../lib/constants");
 const { StatusCodes } = require("http-status-codes");
 
 const wrapperError = (fn) => async (req, res, next) => {
