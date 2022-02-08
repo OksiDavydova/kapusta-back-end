@@ -24,6 +24,8 @@ const login = async (req, res, next) => {
       "Email or password is wrong"
     );
   }
+
+  const { balance, id } = existUser;
   // const verifyPassword = await bcryptjs.compare(password, existUser.password);
 
   jwt.verify(existUser.token, TOKEN_SECRET_KEY, async (err, decoded) => {
@@ -37,13 +39,15 @@ const login = async (req, res, next) => {
       return res.status(StatusCodes.OK).json({
         message: "Success",
         code: StatusCodes.OK,
-        user: existUser,
+        user: { email, balance, id },
       });
     }
     console.log("Token has already exist");
-    return res
-      .status(StatusCodes.OK)
-      .json({ message: "Success", code: StatusCodes.OK, user: existUser });
+    return res.status(StatusCodes.OK).json({
+      message: "Success",
+      code: StatusCodes.OK,
+      user: { email, balance, id },
+    });
   });
 };
 
