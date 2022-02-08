@@ -4,6 +4,6 @@ const { balance } = require("../controllers/users");
 
 const router = express.Router();
 
-router.route("/balance").patch(guard, wrapperError(balance));
+router.route("/balance").patch(wrapperError(guard), wrapperError(balance));
 
 module.exports = router;

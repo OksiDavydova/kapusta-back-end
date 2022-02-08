@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.route("/signup").post(wrapperError(signup));
 router.route("/login").post(wrapperError(login));
-router.route("/logout").post(guard, wrapperError(logout));
+router.route("/logout").post(wrapperError(guard), wrapperError(logout));
 router.route("/googlelogin").get(wrapperError(googleAuth));
 router.route("/google-redirect").get(wrapperError(googleRedirect));
 
