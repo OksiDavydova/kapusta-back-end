@@ -13,7 +13,7 @@ const signup = async (req, res, next) => {
 
   return res.status(StatusCodes.CREATED).json({
     code: StatusCodes.CREATED,
-    message: "User successfully created ",
+    message: "User successfully created",
     user: newUser,
   });
 };
