@@ -2,8 +2,13 @@ const { StatusCodes } = require("http-status-codes");
 const Transaction = require("../../models/Transaction");
 
 const addTransaction = async (req, res) => {
+  const { id: userID } = req.user;
+
   try {
-    const transaction = await Transaction.create(req.body);
+    const transaction = await Transaction.create({
+      ...req.body,
+      owner: userID,
+    });
     return res
       .status(StatusCodes.CREATED)
       .json({ message: "ok", code: StatusCodes.CREATED, data: transaction });

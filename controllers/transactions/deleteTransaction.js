@@ -2,8 +2,13 @@ const { StatusCodes } = require("http-status-codes");
 const Transaction = require("../../models/Transaction");
 
 const deleteTransaction = async (req, res) => {
+  const { id: userID } = req.user;
+
   try {
-    const transaction = await Transaction.findByIdAndDelete(req.params.id);
+    const transaction = await Transaction.findOneAndDelete({
+      owner: userID,
+      _id: req.params.id,
+    });
     if (!transaction) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         message: `Cannot remove with id: ${req.params.id}`,

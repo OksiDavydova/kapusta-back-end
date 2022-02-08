@@ -27,7 +27,7 @@ const transactionSchema = new Schema(
     owner: {
       type: SchemaTypes.ObjectId,
       ref: "user",
-      // required: true,
+      required: true,
     },
     income: {
       type: Boolean,
