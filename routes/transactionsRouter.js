@@ -4,13 +4,14 @@ const {
   deleteTransaction,
   getTransactions,
 } = require("../controllers/transactions");
-const wrapperError = require("../middlewares/wrapperError");
-const guard = require("../middlewares/guard");
+const { wrapperError, guard } = require("../middlewares");
 
 const router = express.Router();
 
-router.route("/").post(guard, wrapperError(addTransaction));
-router.route("/:id").delete(guard, wrapperError(deleteTransaction));
-router.route("/").get(guard, wrapperError(getTransactions));
+router.route("/").post(wrapperError(guard), wrapperError(addTransaction));
+router
+  .route("/:id")
+  .delete(wrapperError(guard), wrapperError(deleteTransaction));
+router.route("/").get(wrapperError(guard), wrapperError(getTransactions));
 
 module.exports = router;
