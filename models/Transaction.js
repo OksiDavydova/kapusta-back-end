@@ -8,7 +8,7 @@ const transactionSchema = new Schema(
       length: 8,
       required: [true, "Введите дату"],
     },
-    discri: {
+    description: {
       type: String,
       required: [true, "Введите название"],
     },
@@ -27,7 +27,7 @@ const transactionSchema = new Schema(
     owner: {
       type: SchemaTypes.ObjectId,
       ref: "user",
-      required: true,
+      // required: true,
     },
     income: {
       type: Boolean,
