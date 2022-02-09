@@ -55,6 +55,7 @@ exports.googleRedirect = async (req, res) => {
 
   const currentUser = await User.findOne({ email: userData.data.email });
 
-  // переадресация по линку. Можем подставить любые данные
-  return res.redirect(`${process.env.FRONTEND_URL}?id=${currentUser.id}`);
+  return res.redirect(`${process.env.FRONTEND_URL}?token=${currentUser.token}`);
+
+  // return res.?redirect(`${process.env.FRONTEND_URL}/main`);
 };
