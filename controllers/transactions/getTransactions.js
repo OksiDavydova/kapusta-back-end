@@ -9,8 +9,8 @@ const getTransactions = async (req, res) => {
     return res.status(StatusCodes.OK).json({
       message: "ok",
       code: StatusCodes.OK,
+      total: transactions.length,
       data: transactions,
-      count: transactions.length,
     });
   } catch (error) {
     res
