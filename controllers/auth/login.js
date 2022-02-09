@@ -25,7 +25,7 @@ const login = async (req, res, next) => {
     );
   }
 
-  const { balance, id } = existUser;
+  const { balance, id, token } = existUser;
   // const verifyPassword = await bcryptjs.compare(password, existUser.password);
 
   jwt.verify(existUser.token, TOKEN_SECRET_KEY, async (err, decoded) => {
