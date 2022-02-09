@@ -31,7 +31,7 @@ const login = async (req, res, next) => {
   jwt.verify(existUser.token, TOKEN_SECRET_KEY, async (err, decoded) => {
     if (err) {
       const token = jwt.sign({ id: existUser.id }, TOKEN_SECRET_KEY, {
-        expiresIn: "1h",
+        expiresIn: "8h",
       });
       existUser.token = token;
       await existUser.save();
@@ -39,14 +39,14 @@ const login = async (req, res, next) => {
       return res.status(StatusCodes.OK).json({
         message: "Success",
         code: StatusCodes.OK,
-        user: { email, balance, id },
+        user: { email, balance, token, id },
       });
     }
     console.log("Token has already exist");
     return res.status(StatusCodes.OK).json({
       message: "Success",
       code: StatusCodes.OK,
-      user: { email, balance, id },
+      user: { email, balance, token, id },
     });
   });
 };
