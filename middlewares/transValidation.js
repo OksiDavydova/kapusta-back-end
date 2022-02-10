@@ -4,9 +4,10 @@ const { Categories } = require("../lib/constants");
 const createTransactionSchema = Joi.object({
     date: Joi.string().custom((value) => {
       const dateRegex = /[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/;
+      // (?:19|20)[0-9]{2}[-\\/ ]?(0?[1-9]|1[0-2])[-/ ]?(0?[1-9]|[12][0-9]|3[01])
       const isValidDate = dateRegex.test(value);
       if (!isValidDate) {
-        return res.status(400).json({ message: "Invalid 'date'. Please, use YYYY-MM-DD string format"});
+        return res.status(400).json({ message: "Invalid 'date'. Please, use YYYYMMDD string format"});
       }
       return value;
     }),
