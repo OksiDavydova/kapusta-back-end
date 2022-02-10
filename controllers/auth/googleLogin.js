@@ -55,7 +55,9 @@ exports.googleRedirect = async (req, res) => {
 
   const currentUser = await User.findOne({ email: userData.data.email });
 
-  return res.redirect(`${process.env.FRONTEND_URL}?token=${currentUser.token}`);
+  return res.redirect(
+    `${process.env.FRONTEND_URL}/googleAuth?token=${currentUser.token}`
+  );
 
   // return res.?redirect(`${process.env.FRONTEND_URL}/main`);
 };
