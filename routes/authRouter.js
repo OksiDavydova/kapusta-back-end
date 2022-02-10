@@ -17,3 +17,4 @@ router.route("/googlelogin").get(wrapperError(googleAuth));
 router.route("/google-redirect").get(wrapperError(googleRedirect));
 
 module.exports = router;
+ 
