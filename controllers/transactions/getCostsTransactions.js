@@ -2,21 +2,20 @@ const { StatusCodes } = require("http-status-codes");
 const Transaction = require("../../models/Transaction");
 const getNextMonth = require("../../helpers/statistic/getNextMonth");
 
-const getTransactions = async (req, res) => {
+const getCostTransactions = async (req, res) => {
+  console.log(`I'm getCostsTransactions`);
+
   const { id: userID } = req.user;
 
   const startOfPeriod = req.startOfPeriod ? req.startOfPeriod : 0;
   const endOfPeriod = req.endOfPeriod ? req.endOfPeriod : getNextMonth();
 
-  console.log(`I'm getTransactions`);
-
   let transactions;
   try {
     transactions = await Transaction.find({
       owner: userID,
+      income: false,
       $and: [{ date: { $gt: startOfPeriod } }, { date: { $lt: endOfPeriod } }],
-      // date: { $gt: startOfPeriod },
-      // date: { $lt: endOfPeriod },
     });
 
     return res.status(StatusCodes.OK).json({
@@ -32,4 +31,4 @@ const getTransactions = async (req, res) => {
   }
 };
 
-module.exports = getTransactions;
+module.exports = getCostTransactions;
