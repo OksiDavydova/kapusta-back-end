@@ -1,0 +1,1 @@
+const Mailgen = require("mailgen");
