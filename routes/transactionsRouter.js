@@ -29,7 +29,7 @@ router.route("/costs").get(
   wrapperError(getCostsTransactions)
 );
 
-// GET COSTS BY PERIOD
+// GET COSTS BY PERIOD (YYYY or YYYYMM) - 4 or 6 digitals(YYYY - year, MM - month)
 router
   .route("/costs/:period")
   .get(
@@ -39,13 +39,11 @@ router
   );
 
 // GET ALL INCOMES
-router.route("/incomes").get(
-  wrapperError(guard),
-  // wrapperError(setPeriodOfSearchByParams),
-  wrapperError(getIncomesTransactions)
-);
+router
+  .route("/incomes")
+  .get(wrapperError(guard), wrapperError(getIncomesTransactions));
 
-// GET INCOMES BY PERIOD
+// GET INCOMES BY PERIOD (YYYY or YYYYMM) - 4 or 6 digitals(YYYY - year, MM - month)
 router
   .route("/incomes/:period")
   .get(
@@ -57,7 +55,7 @@ router
 // GET ALL TRANSACTIONS
 router.route("/").get(wrapperError(guard), wrapperError(getTransactions));
 
-// GET TRANSACTIONS BY PERIOD
+// GET TRANSACTIONS BY PERIOD (YYYY or YYYYMM) - 4 or 6 digitals(YYYY - year, MM - month)
 router
   .route("/:period")
   .get(
