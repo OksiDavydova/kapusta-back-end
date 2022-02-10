@@ -1,20 +1,13 @@
-const User = require("../../models/User");
+const { updateBalanceUser } = require("../../services/users");
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../../lib/CustomError");
 
 const balance = async (req, res, next) => {
   const { id } = req.user;
   const { balance } = req.body;
-  const updateBalance = await User.findByIdAndUpdate(
-    id,
-    { balance: balance },
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
+  const updatedBalance = updateBalanceUser(id, balance);
 
-  if (!updateBalance) {
+  if (!updatedBalance) {
     throw new CustomError(
       StatusCodes.BAD_REQUEST,
       `Cannot update user with id: ${id}`
