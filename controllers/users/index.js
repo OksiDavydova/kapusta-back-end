@@ -1,4 +1,4 @@
-const balance = require("./balance");
-const current = require("./current");
+const setBalance = require("./setBalance");
+const getBalance = require("./getBalance");
 
-module.exports = { balance, current };
+module.exports = { setBalance, getBalance };

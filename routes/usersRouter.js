@@ -1,10 +1,12 @@
 const express = require("express");
 const { wrapperError, guard } = require("../middlewares");
-const { balance, current } = require("../controllers/users");
+const { setBalance, getBalance } = require("../controllers/users");
 
 const router = express.Router();
 
-router.route("/balance").patch(wrapperError(guard), wrapperError(balance));
-router.route("/current").get(wrapperError(guard), wrapperError(current));
+router
+  .route("/setbalance")
+  .patch(wrapperError(guard), wrapperError(setBalance));
+router.route("/getbalance").get(wrapperError(guard), wrapperError(getBalance));
 
 module.exports = router;
