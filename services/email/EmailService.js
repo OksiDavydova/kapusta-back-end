@@ -21,7 +21,7 @@ class EmailService {
     const mailGenerator = new Mailgen({
       theme: "default",
       product: {
-        name: "Kapusta",
+        name: "Kapu$ta",
         link: this.link,
         logo: "https://i.ibb.co/Lx1S8Dr/logo.png",
         logoHeight: "40px",
@@ -31,9 +31,9 @@ class EmailService {
     const email = {
       body: {
         name: username,
-        intro: "Welcome to Kapusta!",
+        intro: "Welcome to Kapu$ta!",
         action: {
-          instructions: "To get started with Kapusta, please click here:",
+          instructions: "To get started with Kapu$ta, please click here:",
           button: {
             color: "#FB7C2F",
             text: "Confirm your account",
@@ -51,7 +51,7 @@ class EmailService {
 
     const msg = {
       to: email,
-      subject: "Verify email",
+      subject: "Confirm email on Kapu$ta",
       html: emailBody,
     };
 
