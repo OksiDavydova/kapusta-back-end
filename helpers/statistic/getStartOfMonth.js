@@ -1,9 +1,8 @@
-const getStartOfMonth = (numberOfMonthsAgo = 0) => {
-  let numberOfYearsAgo = Math.floor(numberOfMonthsAgo / 12);
-  let currentNumberOfMonthAgo = numberOfMonthsAgo - numberOfYearsAgo * 12;
+const getStartOfMonth = (req, res, next) => {
+  let startOfMonth = "";
 
-  let currentMonth = new Date().getMonth() + 1 - currentNumberOfMonthAgo;
-  let currentYear = new Date().getFullYear() - numberOfYearsAgo;
+  let currentMonth = new Date().getMonth() + 1;
+  let currentYear = new Date().getFullYear();
 
   if (currentMonth < 1) {
     currentMonth = 12 + currentMonth;
@@ -11,7 +10,16 @@ const getStartOfMonth = (numberOfMonthsAgo = 0) => {
   }
 
   if (currentMonth < 10) {
-    return `${currentYear.toString()}0${currentMonth.toString()}01`;
+    startOfMonth = `${currentYear.toString()}0${currentMonth.toString()}01`;
+  } else {
+    startOfMonth = `${currentYear.toString()}${currentMonth.toString()}01`;
   }
-  return `${currentYear.toString()}${currentMonth.toString()}01`;
+
+  req.startOfSearch = startOfMonth;
+
+  console.log("END_getStartOfMonth: ", startOfMonth);
+  // return req.startOfMonth;
+  next();
 };
+
+module.exports = getStartOfMonth;

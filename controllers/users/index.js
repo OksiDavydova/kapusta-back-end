@@ -1,5 +1,5 @@
-const balance = require("./balance");
-const current = require("./current");
+const balance = require("./setBalance");
+const current = require("./getBalance");
 const verifyUser = require("./verifyUser");
 const repeatEmailForVerifyUser = require("./repeatEmailForVerifyUser");
 
