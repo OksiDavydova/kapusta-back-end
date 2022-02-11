@@ -10,12 +10,12 @@ const {
   getTransactionsForSixMonths,
 } = require("../controllers/transactions");
 const setPeriodOfSearchByParams = require("../helpers/statistic/setPetiodOfSearchByParams");
-const { wrapperError, guard } = require("../middlewares");
+const { wrapperError, guard, validateCreateTransaction } = require("../middlewares");
 
 const router = express.Router();
 
 // ADD TRANSACTION
-router.route("/").post(wrapperError(guard), wrapperError(addTransaction));
+router.route("/").post(wrapperError(guard), validateCreateTransaction, wrapperError(addTransaction));
 
 // DELETE TRANSACTION
 router
