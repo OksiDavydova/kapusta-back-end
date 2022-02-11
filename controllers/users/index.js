@@ -1,4 +1,6 @@
-const setBalance = require("./setBalance");
-const getBalance = require("./getBalance");
+const balance = require("./setBalance");
+const current = require("./getBalance");
+const verifyUser = require("./verifyUser");
+const repeatEmailForVerifyUser = require("./repeatEmailForVerifyUser");
 
-module.exports = { setBalance, getBalance };
+module.exports = { verifyUser, repeatEmailForVerifyUser, balance, current };
