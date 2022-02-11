@@ -2,9 +2,16 @@ const Joi = require('joi');
 
 const updateBalanceSchema = Joi.object({
     email: Joi.string().email().required(),
-    password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),  
     balance: Joi.number().optional(),
+    password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
 });
+
+const validateId = async (req, res, next) => {
+    if (!Types.ObjectId.isValid(req.params.id)) {
+       return res.status(400).json({ message: 'Invalid ObjectId' })
+   }
+    next()
+};
 
 const validateUpdateBalance = async (req, res,next) => {
     try {
@@ -15,4 +22,4 @@ const validateUpdateBalance = async (req, res,next) => {
      next();
 };  
 
-module.exports = validateUpdateBalance;
+module.exports = {validateUpdateBalance, validateId};
