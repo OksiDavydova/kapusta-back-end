@@ -1,21 +1,10 @@
 const Mailgen = require("mailgen");
-// const linkType = require("./linkType");
+const linkType = require("./linkType");
 
 class EmailService {
   constructor(env, sender) {
     this.sender = sender;
-    switch (env) {
-      case "development":
-        this.link = "http://localhost:3001";
-        return;
-      case "production":
-        this.link = "https://api-kapusta.herokuapp.com";
-        return;
-      default:
-        this.link = "http://localhost:3002";
-        return;
-    }
-    // this.link = linkType(env);
+    this.link = linkType(env);
   }
 
   createEmailTemplate(username, verificationToken) {
