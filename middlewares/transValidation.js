@@ -13,7 +13,7 @@ const validateCreateTransaction = async (req, res,next) => {
     try {
          await createTransactionSchema.validateAsync(req.body)
     } catch (err) {
-        return res.status(400).json({ message: 'Invalid data. Please, use YYYYMMDD string format'})
+        return res.status(400).json({ message: err.message})
     }
      next();
 };  
