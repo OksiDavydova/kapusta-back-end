@@ -7,6 +7,7 @@ const TOKEN_SECRET_KEY = process.env.TOKEN_SECRET_KEY;
 
 const login = async (req, res, next) => {
   const { email, password } = req.body;
+  console.log("🚀 ~ file: login.js ~ line 10 ~ login ~ email", email);
 
   const existUser = await isExistUser(email);
 
