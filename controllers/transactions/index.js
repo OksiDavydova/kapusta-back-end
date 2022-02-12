@@ -7,6 +7,10 @@ const getTransactionsByMonth = require("./getTransactionsByMonth");
 const getTransactionsByOperation = require("./getTransactionsByOperation");
 const getTransactionsByOperationByMonth = require("./getTransactionsByOperationByMonth");
 const getTransactionsForSixMonths = require("./getTransactionsForSixMonths");
+const getStatistics = require("./getStatistics");
+const getStatisticsForCategory = require("./getStatisticsForCategory");
+const getSortedByValueOfDescription = require("./getSortedByValueOfDescription");
+const getIncomesAndCosts = require("./getIncomesAndCosts");
 
 module.exports = {
   addTransaction,
@@ -18,4 +22,8 @@ module.exports = {
   getTransactionsByOperation,
   getTransactionsByOperationByMonth,
   getTransactionsForSixMonths,
+  getStatistics,
+  getStatisticsForCategory,
+  getSortedByValueOfDescription,
+  getIncomesAndCosts,
 };

@@ -1,4 +1,9 @@
-const setBalance = require("./setBalance");
-const getBalance = require("./getBalance");
+const aggregation = require("./aggregation");
+const aggregationBySorted = require("./aggregationBySorted");
+const aggregationAll = require("./aggregationAll");
 
-module.exports = { setBalance, getBalance };
+module.exports = {
+  aggregation,
+  aggregationBySorted,
+  aggregationAll,
+};

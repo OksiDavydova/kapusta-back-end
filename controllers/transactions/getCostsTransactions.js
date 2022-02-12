@@ -3,8 +3,6 @@ const Transaction = require("../../models/Transaction");
 const getNextMonth = require("../../helpers/statistic/getNextMonth");
 
 const getCostTransactions = async (req, res) => {
-  console.log(`I'm getCostsTransactions`);
-
   const { id: userID } = req.user;
 
   const startOfPeriod = req.startOfPeriod ? req.startOfPeriod : 0;
