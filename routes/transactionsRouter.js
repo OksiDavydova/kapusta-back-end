@@ -1,10 +1,12 @@
 const express = require("express");
+
 const {
   addTransaction,
   deleteTransaction,
   getTransactions,
   getCostsTransactions,
   getIncomesTransactions,
+  getBalanceTransactions,
 } = require("../controllers/transactions");
 
 const setPeriodOfSearchByParams = require("../helpers/statistic/setPeriodOfSearchByParams");
@@ -39,6 +41,11 @@ router
 router
   .route("/costs")
   .get(wrapperError(guard), wrapperError(getCostsTransactions));
+
+// GET BALANCE
+router
+  .route("/getbalance")
+  .get(wrapperError(guard), wrapperError(getBalanceTransactions));
 
 // GET COSTS BY PERIOD ("YYYY" - 4 digitals of year
 //                    or YYYYMM - 6 digitals of year and month
