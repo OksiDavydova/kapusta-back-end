@@ -12,7 +12,7 @@ class EmailService {
       theme: "default",
       product: {
         name: "Kapu$ta",
-        link: this.link,
+        link: "https://vigorous-hawking-9bd900.netlify.app",
         logo: "https://i.ibb.co/Lx1S8Dr/logo.png",
         logoHeight: "40px",
       },
