@@ -3,7 +3,7 @@ const aggregationBySorted = require("./aggregationBySorted");
 const aggregationAll = require("./aggregationAll");
 
 const balance = require("./setBalance");
-//const current = require("./getBalance");
+const current = require("./current");
 const verifyUser = require("./verifyUser");
 const repeatEmailForVerifyUser = require("./repeatEmailForVerifyUser");
 
