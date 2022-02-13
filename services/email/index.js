@@ -1,4 +1,4 @@
 const EmailService = require("./EmailService");
-const Sender = require("./Sender");
+const Sender = require("./sender");
 
 module.exports = { EmailService, Sender };
