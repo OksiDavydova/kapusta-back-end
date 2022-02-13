@@ -11,6 +11,7 @@ const getStatistics = require("./getStatistics");
 const getStatisticsForCategory = require("./getStatisticsForCategory");
 const getSortedByValueOfDescription = require("./getSortedByValueOfDescription");
 const getIncomesAndCosts = require("./getIncomesAndCosts");
+const getBalanceTransactions = require("./getBalanceTransactions");
 
 module.exports = {
   addTransaction,
@@ -26,4 +27,5 @@ module.exports = {
   getStatisticsForCategory,
   getSortedByValueOfDescription,
   getIncomesAndCosts,
+  getBalanceTransactions,
 };
