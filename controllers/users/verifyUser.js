@@ -3,6 +3,8 @@ const CustomError = require("../../lib/CustomError");
 const { getUserByToken } = require("../../services/users");
 const { updateVerifyUser } = require("../../services/users");
 
+const FRONTEND_URL = process.env.FRONTEND_URL;
+
 const verifyUser = async (req, res, next) => {
   const token = req.params.verificationToken;
   const user = await getUserByToken(token);
@@ -12,9 +14,7 @@ const verifyUser = async (req, res, next) => {
   }
 
   await updateVerifyUser(user.id, true);
-  res
-    .status(StatusCodes.OK)
-    .json({ code: StatusCodes.OK, message: "Verification successful" });
+  res.redirect(`${FRONTEND_URL}/mailconfirm?token=${user.token}`);
 };
 
 module.exports = verifyUser;
