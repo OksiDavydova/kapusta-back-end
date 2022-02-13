@@ -5,31 +5,44 @@ const {
   getTransactions,
   getCostsTransactions,
   getIncomesTransactions,
-  getTransactionsByOperation,
-  getTransactionsByOperationByMonth,
-  getTransactionsForSixMonths,
 } = require("../controllers/transactions");
-const setPeriodOfSearchByParams = require("../helpers/statistic/setPetiodOfSearchByParams");
-const { wrapperError, guard, validateCreateTransaction } = require("../middlewares");
+
+const setPeriodOfSearchByParams = require("../helpers/statistic/setPeriodOfSearchByParams");
+const {
+  wrapperError,
+  guard,
+  validateCreateTransaction,
+} = require("../middlewares");
+const {
+  aggregation,
+  aggregationAll,
+  aggregationBySorted,
+} = require("../controllers/users/");
 
 const router = express.Router();
 
 // ADD TRANSACTION
-router.route("/").post(wrapperError(guard), validateCreateTransaction, wrapperError(addTransaction));
+router
+  .route("/")
+  .post(
+    wrapperError(guard),
+    validateCreateTransaction,
+    wrapperError(addTransaction)
+  );
 
 // DELETE TRANSACTION
 router
   .route("/:id")
   .delete(wrapperError(guard), wrapperError(deleteTransaction));
 
-// GET ALL COSTS
-router.route("/costs").get(
-  wrapperError(guard),
-  // wrapperError(setPeriodOfSearchByParams),
-  wrapperError(getCostsTransactions)
-);
+// GET ALL COSTS FOR ALL TIME
+router
+  .route("/costs")
+  .get(wrapperError(guard), wrapperError(getCostsTransactions));
 
-// GET COSTS BY PERIOD (YYYY or YYYYMM) - 4 or 6 digitals(YYYY - year, MM - month)
+// GET COSTS BY PERIOD ("YYYY" - 4 digitals of year
+//                    or YYYYMM - 6 digitals of year and month
+//                    or "lastsixmonths" for get by last six months
 router
   .route("/costs/:period")
   .get(
@@ -38,12 +51,14 @@ router
     wrapperError(getCostsTransactions)
   );
 
-// GET ALL INCOMES
+// GET ALL COSTS FOR ALL TIME
 router
   .route("/incomes")
   .get(wrapperError(guard), wrapperError(getIncomesTransactions));
 
-// GET INCOMES BY PERIOD (YYYY or YYYYMM) - 4 or 6 digitals(YYYY - year, MM - month)
+// GET INCOMES BY PERIOD ("YYYY" - 4 digitals of year
+//                    or YYYYMM - 6 digitals of year and month
+//                    or "lastsixmonths" for get by last six months
 router
   .route("/incomes/:period")
   .get(
@@ -55,7 +70,57 @@ router
 // GET ALL TRANSACTIONS
 router.route("/").get(wrapperError(guard), wrapperError(getTransactions));
 
-// GET TRANSACTIONS BY PERIOD (YYYY or YYYYMM) - 4 or 6 digitals(YYYY - year, MM - month)
+// GET all sorted by date
+router
+  .route("/statistics/")
+  .get(wrapperError(guard), wrapperError(aggregation));
+
+// GET all sorted by date BY PERIOD ("YYYY" - 4 digitals of year
+//                    or YYYYMM - 6 digitals of year and month
+//                    or "lastsixmonths" for get by last six months
+router
+  .route("/statistics/:period")
+  .get(
+    wrapperError(guard),
+    wrapperError(setPeriodOfSearchByParams),
+    wrapperError(aggregation)
+  );
+
+// GET sorted by value of description
+router
+  .route("/sorted")
+  .get(wrapperError(guard), wrapperError(aggregationBySorted));
+
+// GET sorted by value of description Y PERIOD ("YYYY" - 4 digitals of year
+//                    or YYYYMM - 6 digitals of year and month
+//                    or "lastsixmonths" for get by last six months
+router
+  .route("/sorted/:period")
+  .get(
+    wrapperError(guard),
+    wrapperError(setPeriodOfSearchByParams),
+    wrapperError(aggregationBySorted)
+  );
+
+// GET one value of icomes and costs
+router
+  .route("/incomesandcosts")
+  .get(wrapperError(guard), wrapperError(aggregationAll));
+
+// GET one value of icomes and costs BY PERIOD ("YYYY" - 4 digitals of year
+//                    or YYYYMM - 6 digitals of year and month
+//                    or "lastsixmonths" for get by last six months
+router
+  .route("/incomesandcosts/:period")
+  .get(
+    wrapperError(guard),
+    wrapperError(setPeriodOfSearchByParams),
+    wrapperError(aggregationAll)
+  );
+
+// GET TRANSACTIONS BY PERIOD ("YYYY" - 4 digitals of year
+//                    or YYYYMM - 6 digitals of year and month
+//                    or "lastsixmonths" for get by last six months
 router
   .route("/:period")
   .get(
@@ -63,20 +128,5 @@ router
     wrapperError(setPeriodOfSearchByParams),
     wrapperError(getTransactions)
   );
-
-// router
-//   .route("/:typeOperation") // month=0;
-//   .get(wrapperError(guard), wrapperError(getTransactionsByMonth));
-
-// TODO
-// router
-//   .route("/:summary/:typeOperation") //
-//   .get(wrapperError(guard), wrapperError(getTransactionsByOperation));
-// router
-//   .route("/:month/:typeOperation/:category") //month=0&insome=false&category=продукты;
-//   .get(wrapperError(guard), wrapperError(getTransactionsByOperationByMonth));
-// router
-//   .route("/:summary") // : month=6
-//   .get(wrapperError(guard), wrapperError(getTransactionsForSixMonths));
 
 module.exports = router;

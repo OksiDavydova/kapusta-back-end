@@ -8,15 +8,11 @@ const getTransactions = async (req, res) => {
   const startOfPeriod = req.startOfPeriod ? req.startOfPeriod : 0;
   const endOfPeriod = req.endOfPeriod ? req.endOfPeriod : getNextMonth();
 
-  console.log(`I'm getTransactions`);
-
   let transactions;
   try {
     transactions = await Transaction.find({
       owner: userID,
       $and: [{ date: { $gt: startOfPeriod } }, { date: { $lt: endOfPeriod } }],
-      // date: { $gt: startOfPeriod },
-      // date: { $lt: endOfPeriod },
     });
 
     return res.status(StatusCodes.OK).json({

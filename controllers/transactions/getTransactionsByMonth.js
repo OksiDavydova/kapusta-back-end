@@ -1,8 +1,6 @@
 const getTransactions = require("./getTransactions");
-const getStartOfMonth = require("../../helpers/statistic/getStartOfMonth");
 
 const getTransactionsByMonth = async (req, res) => {
-  // const startOfMonth = getStartOfMonth();
   req.startOfSearch = 20210201;
 
   try {

@@ -1,16 +1,24 @@
 const getNextMonth = () => {
-  const currentMonth = new Date().getMonth() + 1;
-  const currentYear = new Date().getFullYear();
+  const date = new Date();
+  const month = date.getMonth();
 
-  let currentYearAndMonth;
+  const year = date.getFullYear();
 
-  if (currentMonth < 10) {
-    currentYearAndMonth = `${currentYear.toString()}0${currentMonth.toString()}`;
+  let yearAndNextMonth;
+
+  if (month < 11) {
+    const nextMonth = month + 2;
+    if (nextMonth < 10) {
+      yearAndNextMonth = `${year.toString()}0${nextMonth.toString()}`;
+    } else {
+      yearAndNextMonth = `${year.toString()}${nextMonth.toString()}`;
+    }
   } else {
-    currentYearAndMonth = `${currentYear.toString()}${currentMonth.toString()}`;
+    const nextYear = year + 1;
+    yearAndNextMonth = `${nextYear.toString()}01`;
   }
 
-  return currentYearAndMonth;
+  return yearAndNextMonth;
 };
 
 module.exports = getNextMonth;
