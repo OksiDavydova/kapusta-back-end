@@ -6,8 +6,13 @@ const {
   getCostsTransactions,
   getIncomesTransactions,
 } = require("../controllers/transactions");
+
 const setPeriodOfSearchByParams = require("../helpers/statistic/setPeriodOfSearchByParams");
-const { wrapperError, guard } = require("../middlewares");
+const {
+  wrapperError,
+  guard,
+  validateCreateTransaction,
+} = require("../middlewares");
 const {
   aggregation,
   aggregationAll,
@@ -17,7 +22,13 @@ const {
 const router = express.Router();
 
 // ADD TRANSACTION
-router.route("/").post(wrapperError(guard), wrapperError(addTransaction));
+router
+  .route("/")
+  .post(
+    wrapperError(guard),
+    validateCreateTransaction,
+    wrapperError(addTransaction)
+  );
 
 // DELETE TRANSACTION
 router

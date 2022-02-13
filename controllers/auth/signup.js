@@ -1,6 +1,7 @@
 const { isExistUser, createUser } = require("../../services/auth");
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../../lib/CustomError");
+const { EmailService, Sender } = require("../../services/email");
 
 const signup = async (req, res, next) => {
   const { email } = req.body;
@@ -10,11 +11,22 @@ const signup = async (req, res, next) => {
   }
 
   const newUser = await createUser(req.body);
+  const emailService = new EmailService(process.env.NODE_ENV, new Sender());
+
+  const isSend = await emailService.sendVerifyEmail(
+    newUser.email,
+    newUser.verificationToken
+  );
 
   return res.status(StatusCodes.CREATED).json({
     code: StatusCodes.CREATED,
     message: "User successfully created",
-    user: newUser,
+    user: {
+      id: newUser.id,
+      email: newUser.email,
+      token: newUser.token,
+      isSendVerifyEmail: isSend,
+    },
   });
 };
 
