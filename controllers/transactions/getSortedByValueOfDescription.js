@@ -26,6 +26,7 @@ const getSortedByValueOfDescription = async (id, start, end) => {
         _id: {
           description: "$description",
           category: "$category",
+          income: "$income",
         },
         totalDescription: { $sum: "$value" },
       },
