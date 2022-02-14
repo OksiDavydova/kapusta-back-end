@@ -3,6 +3,7 @@ const getUserByToken = require("./getUserByToken");
 const updateVerifyUser = require("./updateVerifyUser");
 const updateBalanceUser = require("./updateBalanceUser");
 const findUserByEmail = require("./findUserByEmail");
+const updateToken = require("./updateToken");
 
 module.exports = {
   findUserById,
@@ -10,4 +11,5 @@ module.exports = {
   updateVerifyUser,
   updateBalanceUser,
   findUserByEmail,
+  updateToken,
 };

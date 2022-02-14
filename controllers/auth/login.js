@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const { StatusCodes } = require("http-status-codes");
 const { isExistUser } = require("../../services/auth");
 const CustomError = require("../../lib/CustomError");
+const { updateToken } = require("../../services/users");
 
 const TOKEN_SECRET_KEY = process.env.TOKEN_SECRET_KEY;
 
@@ -26,28 +27,39 @@ const login = async (req, res, next) => {
   }
 
   const { balance, id, token } = existUser;
-  // const verifyPassword = await bcryptjs.compare(password, existUser.password);
 
   jwt.verify(existUser.token, TOKEN_SECRET_KEY, async (err, decoded) => {
-    if (err) {
-      const token = jwt.sign({ id: existUser.id }, TOKEN_SECRET_KEY, {
-        expiresIn: "8h",
-      });
-      existUser.token = token;
-      await existUser.save();
-      console.log("New token");
+    try {
+      if (err) {
+        const token = jwt.sign({ id: existUser.id }, TOKEN_SECRET_KEY, {
+          expiresIn: "8h",
+        });
+
+        existUser.token = token;
+        await updateToken({ _id: existUser.id }, { token: token });
+
+        console.log("New token");
+
+        return res.status(StatusCodes.OK).json({
+          message: "Success",
+          code: StatusCodes.OK,
+          user: { email, balance, token, id },
+        });
+      }
+
+      console.log("Token has already exist");
+
       return res.status(StatusCodes.OK).json({
         message: "Success",
         code: StatusCodes.OK,
         user: { email, balance, token, id },
       });
+    } catch (err) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        code: StatusCodes.BAD_REQUEST,
+        message: err.message,
+      });
     }
-    console.log("Token has already exist");
-    return res.status(StatusCodes.OK).json({
-      message: "Success",
-      code: StatusCodes.OK,
-      user: { email, balance, token, id },
-    });
   });
 };
 
