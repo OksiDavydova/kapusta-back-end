@@ -14,7 +14,7 @@ const verifyUser = async (req, res, next) => {
   }
 
   await updateVerifyUser(user.id, true);
-  res.redirect(`${FRONTEND_URL}/mailconfirm?token=${user.token}`);
+  return res.redirect(`${FRONTEND_URL}/mailconfirm?token=${user.token}`);
 };
 
 module.exports = verifyUser;
