@@ -23,7 +23,7 @@ const resultsOfLastSixMonth = (arr) => {
   const indexOfMonth = month - 2;
 
   let year = endOfPeriod.slice(0, 4);
-  for (let i = 0; i < 12; i += 1) {
+  for (let i = 0; i < 6; i += 1) {
     if (month - i > 9) {
       endOfPeriod = year.toString() + (month - i).toString();
     } else if (month - i > 0) {

@@ -1,9 +1,9 @@
 const getNextMonth = require("./getNextMonth");
 const setPeriodOfSearchByParams = require("./setPeriodOfSearchByParams");
-const resultsOfLastSixMonth = require("./resultsOfLastSixMonth");
+const resultsOfLastSixMonths = require("./resultsOfLastSixMonths");
 
 module.exports = {
   getNextMonth,
   setPeriodOfSearchByParams,
-  resultsOfLastSixMonth,
+  resultsOfLastSixMonths,
 };
