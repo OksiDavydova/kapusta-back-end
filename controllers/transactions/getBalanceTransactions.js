@@ -2,13 +2,16 @@ const axios = require("axios");
 const { StatusCodes } = require("http-status-codes");
 
 const getBalanceTransactions = async (req, res) => {
+  const { token } = req.user;
+  const { email } = req.user;
+  console.log("getBalanceTransactions: ", token);
+  console.log("getBalanceTransactions: ", email);
   try {
     const gottenData = await axios({
       url: `${process.env.BACKEND_URL}/api/v1/transactions/incomesandcosts/`,
       method: "get",
       headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMDRmOTc0NmFhNzc2NmFkMGY2OTAxMyIsImlhdCI6MTY0NDc0NjAxMSwiZXhwIjoxNjQ0Nzc0ODExfQ.JRgSGQOM614JQM8taouqRUaokHq37cCxvHH6W2nHK3w",
+        Authorization: `Bearer ${token}`,
       },
     });
 
