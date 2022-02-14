@@ -1,4 +1,6 @@
 const aggregation = require("./aggregation");
+const aggregationCosts = require("./aggregationCosts");
+const aggregationIncomes = require("./aggregationIncomes");
 const aggregationBySorted = require("./aggregationBySorted");
 const aggregationAll = require("./aggregationAll");
 
@@ -13,6 +15,8 @@ module.exports = {
   balance,
   current,
   aggregation,
+  aggregationCosts,
+  aggregationIncomes,
   aggregationBySorted,
   aggregationAll,
 };
