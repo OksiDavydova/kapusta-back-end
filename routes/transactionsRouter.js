@@ -7,6 +7,7 @@ const {
   getCostsTransactions,
   getIncomesTransactions,
   getBalanceTransactions,
+  getForMain,
 } = require("../controllers/transactions");
 
 const setPeriodOfSearchByParams = require("../helpers/statistic/setPeriodOfSearchByParams");
@@ -17,6 +18,8 @@ const {
 } = require("../middlewares");
 const {
   aggregation,
+  aggregationCosts,
+  aggregationIncomes,
   aggregationAll,
   aggregationBySorted,
 } = require("../controllers/users/");
@@ -46,6 +49,8 @@ router
 router
   .route("/getbalance")
   .get(wrapperError(guard), wrapperError(getBalanceTransactions));
+
+router.route("/formain").get(wrapperError(guard), wrapperError(getForMain));
 
 // GET COSTS BY PERIOD ("YYYY" - 4 digitals of year
 //                    or YYYYMM - 6 digitals of year and month
@@ -91,6 +96,36 @@ router
     wrapperError(guard),
     wrapperError(setPeriodOfSearchByParams),
     wrapperError(aggregation)
+  );
+router
+  .route("/statisticscosts/:period")
+  .get(
+    wrapperError(guard),
+    wrapperError(setPeriodOfSearchByParams),
+    wrapperError(aggregationCosts)
+  );
+router
+  .route("/statisticsincomes/:period")
+  .get(
+    wrapperError(guard),
+    wrapperError(setPeriodOfSearchByParams),
+    wrapperError(aggregationIncomes)
+  );
+
+router
+  .route("/statisticscosts/:period")
+  .get(
+    wrapperError(guard),
+    wrapperError(setPeriodOfSearchByParams),
+    wrapperError(aggregationCosts)
+  );
+
+router
+  .route("/statisticsincomes/:period")
+  .get(
+    wrapperError(guard),
+    wrapperError(setPeriodOfSearchByParams),
+    wrapperError(aggregationIncomes)
   );
 
 // GET sorted by value of description
