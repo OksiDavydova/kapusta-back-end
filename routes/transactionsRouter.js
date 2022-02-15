@@ -82,12 +82,12 @@ router
 // GET ALL TRANSACTIONS
 router.route("/").get(wrapperError(guard), wrapperError(getTransactions));
 
-// GET all sorted by date
+// GET all transactions sorted by date
 router
   .route("/statistics/")
   .get(wrapperError(guard), wrapperError(aggregation));
 
-// GET all sorted by date BY PERIOD ("YYYY" - 4 digitals of year
+// GET transactions sorted by date BY PERIOD ("YYYY" - 4 digitals of year
 //                    or YYYYMM - 6 digitals of year and month
 //                    or "lastsixmonths" for get by last six months
 router
@@ -97,21 +97,15 @@ router
     wrapperError(setPeriodOfSearchByParams),
     wrapperError(aggregation)
   );
-router
-  .route("/statisticscosts/:period")
-  .get(
-    wrapperError(guard),
-    wrapperError(setPeriodOfSearchByParams),
-    wrapperError(aggregationCosts)
-  );
-router
-  .route("/statisticsincomes/:period")
-  .get(
-    wrapperError(guard),
-    wrapperError(setPeriodOfSearchByParams),
-    wrapperError(aggregationIncomes)
-  );
 
+// GET all costs sorted by date
+router
+  .route("/statisticscosts")
+  .get(wrapperError(guard), wrapperError(aggregationCosts));
+
+// GET costs sorted by date BY PERIOD ("YYYY" - 4 digitals of year
+//                    or YYYYMM - 6 digitals of year and month
+//                    or "lastsixmonths" for get by last six months
 router
   .route("/statisticscosts/:period")
   .get(
@@ -120,6 +114,14 @@ router
     wrapperError(aggregationCosts)
   );
 
+// GET all costs incomes by date
+router
+  .route("/statisticsincomes")
+  .get(wrapperError(guard), wrapperError(aggregationIncomes));
+
+// GET incomes sorted by date BY PERIOD ("YYYY" - 4 digitals of year
+//                    or YYYYMM - 6 digitals of year and month
+//                    or "lastsixmonths" for get by last six months
 router
   .route("/statisticsincomes/:period")
   .get(
