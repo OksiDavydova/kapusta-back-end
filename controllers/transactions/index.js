@@ -17,6 +17,7 @@ const getBalanceTransactions = require("./getBalanceTransactions");
 const getStatisticsCosts = require("./getStatisticsCosts");
 const getStatisticsIncomes = require("./getStatisticsIncomes");
 const getForMain = require("./getForMain");
+const getForReport = require("./getForReport");
 
 module.exports = {
   addTransaction,
@@ -38,4 +39,5 @@ module.exports = {
   getStatisticsCosts,
   getStatisticsIncomes,
   getForMain,
+  getForReport,
 };
