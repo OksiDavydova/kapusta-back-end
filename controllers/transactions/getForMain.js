@@ -40,12 +40,14 @@ const getForMain = async (req, res) => {
       },
     });
 
-    const sumOfIncomes = gottenData.data.data.filter(
+    let sumOfIncomes = gottenData.data.data.filter(
       (el) => el.income === true
-    )[0].total;
-    const sumOfCosts = gottenData.data.data.filter(
-      (el) => el.income === false
-    )[0].total;
+    )[0]?.total;
+    let sumOfCosts = gottenData.data.data.filter((el) => el.income === false)[0]
+      ?.total;
+
+    sumOfIncomes = sumOfIncomes ? sumOfIncomes : 0;
+    sumOfCosts = sumOfCosts ? sumOfCosts : 0;
 
     const balance = sumOfIncomes - sumOfCosts;
 
@@ -70,4 +72,5 @@ const getForMain = async (req, res) => {
       .json({ message: error.message, code: StatusCodes.BAD_REQUEST });
   }
 };
+
 module.exports = getForMain;

@@ -8,6 +8,7 @@ const {
   getIncomesTransactions,
   getBalanceTransactions,
   getForMain,
+  getForReport,
 } = require("../controllers/transactions");
 
 const setPeriodOfSearchByParams = require("../helpers/statistic/setPeriodOfSearchByParams");
@@ -50,7 +51,17 @@ router
   .route("/getbalance")
   .get(wrapperError(guard), wrapperError(getBalanceTransactions));
 
+// GET generated data for main page
 router.route("/formain").get(wrapperError(guard), wrapperError(getForMain));
+
+// GET generated data for report page
+router
+  .route("/forreport/:period")
+  .get(
+    wrapperError(guard),
+    wrapperError(setPeriodOfSearchByParams),
+    wrapperError(getForReport)
+  );
 
 // GET COSTS BY PERIOD ("YYYY" - 4 digitals of year
 //                    or YYYYMM - 6 digitals of year and month
