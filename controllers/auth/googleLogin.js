@@ -47,17 +47,23 @@ exports.googleRedirect = async (req, res) => {
     },
   });
 
-  const isUserExist = await isExistUser(userData.data.email);
+  const userEmail = userData.data.email;
+
+  const isUserExist = await isExistUser(userEmail);
 
   if (!isUserExist) {
-    await createUser({ email: userData.data.email });
+    await createUser({
+      email: userEmail,
+      isVerify: true,
+      verificationToken: "null",
+    });
   }
 
-  const currentUser = await User.findOne({ email: userData.data.email });
+  const currentUser = await User.findOne({
+    email: userEmail,
+  });
 
   return res.redirect(
     `${process.env.FRONTEND_URL}/googleAuth?token=${currentUser.token}`
   );
-
-  // return res.?redirect(`${process.env.FRONTEND_URL}/main`);
 };
