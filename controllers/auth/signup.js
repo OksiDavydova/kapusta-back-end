@@ -22,9 +22,7 @@ const signup = async (req, res, next) => {
     code: StatusCodes.CREATED,
     message: "User successfully created",
     user: {
-      id: newUser.id,
       email: newUser.email,
-      token: newUser.token,
       isSendVerifyEmail: isSend,
     },
   });
