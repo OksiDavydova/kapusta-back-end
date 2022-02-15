@@ -23,9 +23,10 @@ const signup = async (req, res, next) => {
     message: "User successfully created",
     user: {
       id: newUser.id,
+      name: newUser.name,
       email: newUser.email,
       token: newUser.token,
-      isSendVerifyEmail: isSend,
+      isSendVerifyEmail: isSend     
     },
   });
 };
