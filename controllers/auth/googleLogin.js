@@ -71,7 +71,10 @@ exports.googleRedirect = async (req, res) => {
   const token = jwt.sign({ id: currentUser.id }, TOKEN_SECRET_KEY, {
     expiresIn: "8h",
   });
-  await updateToken({ _id: currentUser.id }, { token: token });
+
+  if (currentUser.token != token) {
+    await updateToken({ _id: currentUser.id }, { token: token });
+  }
 
   return res.redirect(`${process.env.FRONTEND_URL}/googleAuth?token=${token}`);
 };
