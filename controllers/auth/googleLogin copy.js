@@ -68,13 +68,18 @@ exports.googleRedirect = async (req, res) => {
     email: userEmail,
   });
 
-  const token = jwt.sign({ id: currentUser.id }, TOKEN_SECRET_KEY, {
-    expiresIn: "8h",
-  });
+  // jwt.verify(currentUser.token, TOKEN_SECRET_KEY, async (err, decoded) => {
+  //   const token = jwt.sign({ id: currentUser.id }, TOKEN_SECRET_KEY, {
+  //     expiresIn: "8h",
+  //   });
 
-  if (currentUser.token != token) {
-    await updateToken({ _id: currentUser.id }, { token: token });
-  }
+  //   await updateToken({ _id: currentUser.id }, { token: token });
 
-  return res.redirect(`${process.env.FRONTEND_URL}/googleAuth?token=${token}`);
+  //   currentUser.token = token;
+  // });
+
+  // console.log("currentUser.token: ", currentUser.token);
+  return res.redirect(
+    `${process.env.FRONTEND_URL}/googleAuth?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGJkN2IxMThmMWFmMjFhNGNhMmUxMyIsImlhdCI6MTY0NDk2NTYzMSwiZXhwIjoxNjQ0OTk0NDMxfQ.46U6InW3IviA1QoaL-Ocq4YRZRuNfe_-4eKwpHXr520`
+  );
 };
