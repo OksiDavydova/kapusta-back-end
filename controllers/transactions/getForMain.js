@@ -1,6 +1,7 @@
 const axios = require("axios");
 const { StatusCodes } = require("http-status-codes");
 const { resultsOfLastSixMonths } = require("../../helpers/statistic");
+const { formatDate } = require("../../helpers");
 
 const getForMain = async (req, res) => {
   const { token } = req.user;
@@ -30,7 +31,7 @@ const getForMain = async (req, res) => {
       },
     });
 
-    const lastSixMonthsTransaction = transaction.data.data;
+    const lastSixMonthsTransaction = formatDate(transaction.data.data);
 
     const gottenData = await axios({
       url: `${process.env.BACKEND_URL}/api/v1/transactions/incomesandcosts/`,

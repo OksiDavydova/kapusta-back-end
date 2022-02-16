@@ -1,7 +1,12 @@
 const queryString = require("query-string");
 const axios = require("axios");
+const jwt = require("jsonwebtoken");
+
 const { isExistUser, createUser } = require("../../services/auth");
 const User = require("../../models/User");
+const { updateToken } = require("../../services/users");
+
+const TOKEN_SECRET_KEY = process.env.TOKEN_SECRET_KEY;
 
 exports.googleAuth = async (req, res) => {
   const stringifiedParams = queryString.stringify({
@@ -47,11 +52,11 @@ exports.googleRedirect = async (req, res) => {
     },
   });
 
-  const userEmail = userData.data.email;
+  const userEmail = userData.data.email; // test@gmail.com
 
-  const isUserExist = await isExistUser(userEmail);
+  const existUser = await isExistUser(userEmail); //true
 
-  if (!isUserExist) {
+  if (!existUser) {
     await createUser({
       email: userEmail,
       isVerify: true,
@@ -61,6 +66,16 @@ exports.googleRedirect = async (req, res) => {
 
   const currentUser = await User.findOne({
     email: userEmail,
+  });
+
+  jwt.verify(currentUser.token, TOKEN_SECRET_KEY, async (err, decoded) => {
+    const token = jwt.sign({ id: currentUser.id }, TOKEN_SECRET_KEY, {
+      expiresIn: "8h",
+    });
+
+    await updateToken({ _id: currentUser.id }, { token: token });
+
+    currentUser.token = token;
   });
 
   return res.redirect(
