@@ -4,8 +4,7 @@ const { StatusCodes } = require("http-status-codes");
 const getBalanceTransactions = async (req, res) => {
   const { token } = req.user;
   const { email } = req.user;
-  console.log("getBalanceTransactions: ", token);
-  console.log("getBalanceTransactions: ", email);
+
   try {
     const gottenData = await axios({
       url: `${process.env.BACKEND_URL}/api/v1/transactions/incomesandcosts/`,

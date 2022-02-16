@@ -1,13 +1,17 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "2.0.0",
+    "version": "2.1.0",
     "title": "Kapusta API docs",
     "description": "API documentation for GoIT project 'Kapusta'. [Backend github repository](https://github.com/OksiDavydova/kapusta-back-end)"
-      },
+  },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [{"url": "https://localhost:3002"}, {"url": "https://api-kapusta.herokuapp.com"}],
+  "servers": [
+    { "url": "https://api-kapusta.herokuapp.com" },
+    { "url": "http://localhost:3030" },
+    { "url": "https://localhost:3002" }
+  ],
   "tags": [
     {
       "name": "Auth",
@@ -125,7 +129,7 @@
         }
       }
     },
-     "/api/v1/auth/googleLogin": {
+    "/api/v1/auth/googleLogin": {
       "get": {
         "tags": ["Auth"],
         "summary": "Google authentication",
@@ -141,26 +145,10 @@
         }
       }
     },
-       "/api/v1/auth/google-redirect": {
-      "get": {
-        "tags": ["Auth"],
-        "summary": "Google redirect",
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {}
-          },
-          "403": {
-            "description": "Not registered or registered with postman",
-            "content": {}
-          }
-        }
-      }
-    },
     "/api/v1/transactions": {
       "post": {
         "tags": ["Transaction"],
-        "summary": "Add transactions",
+        "summary": "Add transaction",
         "security": [{ "Bearer": [] }],
         "parameters": [],
         "requestBody": {
@@ -199,12 +187,12 @@
           }
         }
       },
-       "get": {
+      "get": {
         "tags": ["Transaction"],
         "summary": "Get all transactions",
         "security": [{ "Bearer": [] }],
         "parameters": [],
-        
+
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -229,25 +217,32 @@
             "content": {}
           }
         }
-      }    
-    },      
-      "/api/v1/transactions/{id}": {
-      "delete": {
+      }
+    },
+    "/api/v1/transactions/{period}": {
+      "get": {
         "tags": ["Transaction"],
-        "summary": "Delete transactions",
+        "summary": "Get transaction for a specific period",
         "security": [{ "Bearer": [] }],
         "parameters": [
           {
-            "name": "id",
+            "name": "period",
             "in": "path",
             "required": true,
             "type": "string",
-            "description": "Transaction's id"
+            "description": "Period dates. Data format: (YYYY or YYYYMM) - 4 or 6 digitals(YYYY - year, MM - month)"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successful operation"           
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionsResponse"
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad request (invalid 'date' format) / No token provided",
@@ -263,20 +258,53 @@
           }
         }
       }
-    }, 
-      "/api/v1/transactions/costs": {
+    },
+    "/api/v1/transactions/{id}": {
+      "delete": {
+        "tags": ["Transaction"],
+        "summary": "Delete transaction",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Transaction's id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Bad request (invalid 'date' format) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/v1/transactions/costs": {
       "get": {
         "tags": ["Transaction"],
         "summary": "Get all cost",
         "security": [{ "Bearer": [] }],
-        "parameters": [ ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "Successful operation",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DataResponse"
+                  "$ref": "#/components/schemas/TransactionsResponse"
                 }
               }
             }
@@ -316,39 +344,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DataResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request (invalid 'date' format) / No token provided",
-            "content": {}
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {}
-          },
-          "404": {
-            "description": "Invalid user / Invalid session",
-            "content": {}
-          }
-        }
-      }
-    },  
-       "/api/v1/transactions/incomes": {
-      "get": {
-        "tags": ["Transaction"],
-        "summary": "Get all incomens",
-        "security": [{ "Bearer": [] }],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DataResponse"
+                  "$ref": "#/components/schemas/TransactionsResponse"
                 }
               }
             }
@@ -368,7 +364,39 @@
         }
       }
     },
-      "/api/v1/transactions/incomes/{period}": {
+    "/api/v1/transactions/incomes": {
+      "get": {
+        "tags": ["Transaction"],
+        "summary": "Get all incomens",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid 'date' format) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/v1/transactions/incomes/{period}": {
       "get": {
         "tags": ["Transaction"],
         "summary": "Get  incomens for a specific period",
@@ -388,7 +416,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DataResponse"
+                  "$ref": "#/components/schemas/TransactionsResponse"
                 }
               }
             }
@@ -407,7 +435,399 @@
           }
         }
       }
-    }, 
+    },
+    "/api/v1/transactions/getbalance": {
+      "get": {
+        "tags": ["Transaction"],
+        "summary": "Get balance, sum of incomes and sum of costs",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/getBalanceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid 'date' format) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/v1/transactions/formain": {
+      "get": {
+        "tags": ["Transaction"],
+        "summary": "Get array sums of costs by last six months, array sums of incomes by last six months and array of all transactions by last sixmonth",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/forMainResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid 'date' format) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/v1/transactions/forreport/{period}": {
+      "get": {
+        "tags": ["Transaction"],
+        "summary": "Get data about transactions sorted by sums of descriptions",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "period",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Period dates. Data format: (YYYY or YYYYMM) - 4 or 6 digitals(YYYY - year, MM - month)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/forReportResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid 'date' format) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/v1/transactions/statistics": {
+      "get": {
+        "tags": ["Transaction"],
+        "summary": "Get all transactions sorted by date",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid 'date' format) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/v1/transactions/statistics/{period}": {
+      "get": {
+        "tags": ["Transaction"],
+        "summary": "Get all transactions sorted by date by period",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "period",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Period dates. Data format: (YYYY or YYYYMM) - 4 or 6 digitals(YYYY - year, MM - month)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid 'date' format) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/v1/transactions/statisticscosts": {
+      "get": {
+        "tags": ["Transaction"],
+        "summary": "Get all costs sorted by date",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid 'date' format) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/v1/transactions/statisticscosts/{period}": {
+      "get": {
+        "tags": ["Transaction"],
+        "summary": "Get costs sorted by date by period",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "period",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Period dates. Data format: (YYYY or YYYYMM) - 4 or 6 digitals(YYYY - year, MM - month)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid 'date' format) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/v1/transactions/statisticsincomes": {
+      "get": {
+        "tags": ["Transaction"],
+        "summary": "Get all incomes sorted by date",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid 'date' format) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/v1/transactions/statisticsincomes/{period}": {
+      "get": {
+        "tags": ["Transaction"],
+        "summary": "Get incomes sorted by date by period",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "period",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Period dates. Data format: (YYYY or YYYYMM) - 4 or 6 digitals(YYYY - year, MM - month)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid 'date' format) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/v1/transactions/incomesandcosts": {
+      "get": {
+        "tags": ["Transaction"],
+        "summary": "Get sums incomes and costs",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid 'date' format) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/v1/transactions/incomesandcosts/{period}": {
+      "get": {
+        "tags": ["Transaction"],
+        "summary": "Get sums incomes and costs by period",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "period",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Period dates. Data format: (YYYY or YYYYMM) - 4 or 6 digitals(YYYY - year, MM - month)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid 'date' format) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
     "/api/v1/users/balance": {
       "patch": {
         "tags": ["User"],
@@ -451,49 +871,16 @@
         }
       }
     },
-    "/api/v1/users/current": {
-      "get": {
-        "tags": ["User"],
-        "summary": "Get current user's balance",
-        "security": [{ "Bearer": [] }],
-        "parameters": [],
-        
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CurrentBalanceResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request (invalid request body) / No token provided",
-            "content": {}
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {}
-          },
-          "404": {
-            "description": "Invalid user / Invalid session",
-            "content": {}
-          }
-        }
-      }
-    },
     "/api/v1/users/verify": {
       "post": {
         "tags": ["User"],
         "summary": "Verify user",
         "parameters": [],
         "security": [{ "Bearer": [] }],
-       
+
         "responses": {
           "200": {
-            "description": "Successful operation"           
+            "description": "Successful operation"
           },
           "400": {
             "description": "No token provided",
@@ -520,10 +907,10 @@
           }
         ],
         "security": [{ "Bearer": [] }],
-        
+
         "responses": {
           "200": {
-            "description": "Successful operation"            
+            "description": "Successful operation"
           },
           "400": {
             "description": "No token provided",
@@ -554,7 +941,7 @@
             "example": "qwerty123"
           }
         }
-    },
+      },
       "RegistrationResponse": {
         "type": "object",
         "properties": {
@@ -563,23 +950,23 @@
             "description": "User's email",
             "format": "email"
           },
-          "balance":{
-           "type": "integer",
-           "description": "User's new balance",
-           "example": 0
+          "balance": {
+            "type": "integer",
+            "description": "User's new balance",
+            "example": 0
           },
           "id": {
             "type": "string",
             "description": "User's id",
             "example": "507f1f77bcf86cd799439011"
           },
-          "token":{
+          "token": {
             "type": "string",
             "description": "Access token",
             "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMDVhZmMzNzlhZWYxMmJkNTY4NDRjNyIsImlhdCI6MTY0NDUzOTk1OCwiZXhwIjoxNjQ0NTY4NzU4fQ._--fSrT_BzXZoSkpzv6AR4twLhs2Ev4DSx90mbnY86c"
+          }
         }
-      }
-    },
+      },
       "SignupRequest": {
         "required": ["email", "password"],
         "type": "object",
@@ -595,7 +982,7 @@
             "example": "qwerty123"
           }
         }
-    },
+      },
       "LoginResponse": {
         "type": "object",
         "properties": {
@@ -604,24 +991,24 @@
             "description": "User's email",
             "format": "email"
           },
-          "balance":{
-           "type": "integer",
-           "description": "User's new balance",
-           "example": 0
+          "balance": {
+            "type": "integer",
+            "description": "User's new balance",
+            "example": 0
           },
           "id": {
             "type": "string",
             "description": "User's id",
             "example": "507f1f77bcf86cd799439011"
           },
-          "token":{
+          "token": {
             "type": "string",
             "description": "Access token",
             "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMDVhZmMzNzlhZWYxMmJkNTY4NDRjNyIsImlhdCI6MTY0NDUzOTk1OCwiZXhwIjoxNjQ0NTY4NzU4fQ._--fSrT_BzXZoSkpzv6AR4twLhs2Ev4DSx90mbnY86c"
+          }
         }
-      }
-    },
-     "AddTransactionsRequest": {
+      },
+      "AddTransactionsRequest": {
         "type": "object",
         "required": ["description", "date", "category", "value", "income"],
         "properties": {
@@ -635,12 +1022,12 @@
             "description": "Transaction description",
             "example": "Transaction description"
           },
-           "category": {
+          "category": {
             "type": "string",
             "description": "Categories",
-            "example": "продукты"
+            "example": "Продукты"
           },
-           "value": {
+          "value": {
             "type": "number",
             "description": "quantity",
             "example": "2"
@@ -650,80 +1037,416 @@
             "description": "Which group does it belong to: costs or income",
             "default": "false",
             "example": "false"
-          }
-          
-        }
-      },   
-    "TransactionsResponse": {
-        "type": "object",
-        "required": [],
-        "properties": {
-          "date": {
-            "type": "string",
-            "description": "Date",
-            "example": "20201231"
-          },
-          "description": {
-            "type": "string",
-            "description": "Transaction description",
-            "example": "Transaction description"
-          },
-           "category": {
-            "type": "string",
-            "description": "Categories",
-            "example": "продукты"
-          },
-           "value": {
-            "type": "number",
-            "description": "quantity",
-            "example": "2"
-          },
-          "owner":{
-            "type": "string",
-             "description": "User`s id",
-             "example": "6207d61a9eb8eb48c71ee728"
-          },
-          "income": {
-            "type": "boolean",
-            "description": "Which group does it belong to: costs or income",
-            "default": "false",
-            "example": "false"
-          },
-          "id":{
-            "type": "string",
-             "description": "User`s id",
-             "example": "6207d61a9eb8eb48c71ee728"
-          },
-          "createdAt":{
-            "type": "string",
-             "description": "Date of creation",
-             "example": "2022-02-12T15:45:30.553Z"
-          },
-          "updatedAt":{
-            "type": "string",
-             "description": "Date of update",
-             "example": "2022-02-12T15:45:30.553Z"
-          }
-
-        }
-      },  
-    "DataResponse": {
-        "type": "object",
-        "required": [],
-        "properties": {
-          "total": {
-            "type": "number",
-            "description": "Total amount",
-            "example": "0"
-          },
-          "data": {
-            "type": "array",            
-            "description": "List of operations",
-             "example": "[{Array of objects with data}] "                 
           }
         }
       },
-    "NewBalanceRequest": {
+      "TransactionsResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "date": {
+              "type": "string",
+              "description": "Date",
+              "example": "20201231"
+            },
+            "description": {
+              "type": "string",
+              "description": "Transaction description",
+              "example": "Молоко"
+            },
+            "category": {
+              "type": "string",
+              "description": "Categories",
+              "example": "Продукты"
+            },
+            "value": {
+              "type": "number",
+              "description": "quantity",
+              "example": "200"
+            },
+            "owner": {
+              "type": "string",
+              "description": "User`s id",
+              "example": "6207d61a9eb8eb48c71ee728"
+            },
+            "income": {
+              "type": "boolean",
+              "description": "Which group does it belong to: costs or income",
+              "default": "false",
+              "example": "false"
+            },
+            "id": {
+              "type": "string",
+              "description": "User`s id",
+              "example": "6207d61a9eb8eb48c71ee728"
+            },
+            "createdAt": {
+              "type": "string",
+              "description": "Date of creation",
+              "example": "2022-02-12T15:45:30.553Z"
+            },
+            "updatedAt": {
+              "type": "string",
+              "description": "Date of update",
+              "example": "2022-02-12T15:45:30.553Z"
+            }
+          }
+        },
+        "example": [
+          {
+            "date": "20220215",
+            "description": "Хлеб",
+            "category": "Продукты",
+            "value": 800,
+            "owner": "620a1e83b558f640b7ef1f1f",
+            "income": false,
+            "createdAt": "2022-02-15T11:52:41.103Z",
+            "updatedAt": "2022-02-15T11:52:41.103Z",
+            "id": "620b94090b7f6874c933876f"
+          },
+          {
+            "date": "20220214",
+            "description": "Молоко",
+            "category": "Продукты",
+            "value": 400,
+            "owner": "620a1e83b558f640b7ef1f1f",
+            "income": false,
+            "createdAt": "2022-02-15T11:53:26.341Z",
+            "updatedAt": "2022-02-15T11:53:26.341Z",
+            "id": "620b94360b7f6874c9338772"
+          }
+        ]
+      },
+      "getBalanceResponse": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "nubmer",
+            "description": "total",
+            "example": "20499.8"
+          },
+          "incomes": {
+            "type": "number",
+            "description": "income",
+            "example": "45000"
+          },
+          "costs": {
+            "type": "number",
+            "description": "Categories",
+            "example": "24500.2"
+          }
+        }
+      },
+      "forMainResponse": {
+        "type": "object",
+        "properties": {
+          "lastSixMonthsCosts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "month": {
+                  "type": "number",
+                  "description": "total for month",
+                  "example": "22000.2"
+                }
+              }
+            }
+          },
+          "lastSixMonthsIncomes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "month": {
+                  "type": "number",
+                  "description": "total for month",
+                  "example": "22000.2"
+                }
+              }
+            }
+          },
+          "lastSixMonthsTransaction": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "description": "Date",
+                  "example": "20201231"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Transaction description",
+                  "example": "Молоко"
+                },
+                "category": {
+                  "type": "string",
+                  "description": "Categories",
+                  "example": "Продукты"
+                },
+                "value": {
+                  "type": "number",
+                  "description": "quantity",
+                  "example": "200"
+                },
+                "owner": {
+                  "type": "string",
+                  "description": "User`s id",
+                  "example": "6207d61a9eb8eb48c71ee728"
+                },
+                "income": {
+                  "type": "boolean",
+                  "description": "Which group does it belong to: costs or income",
+                  "default": "false",
+                  "example": "false"
+                },
+                "id": {
+                  "type": "string",
+                  "description": "User`s id",
+                  "example": "6207d61a9eb8eb48c71ee728"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "description": "Date of creation",
+                  "example": "2022-02-12T15:45:30.553Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "description": "Date of update",
+                  "example": "2022-02-12T15:45:30.553Z"
+                }
+              }
+            }
+          },
+          "total": {
+            "type": "nubmer",
+            "description": "total",
+            "example": "20499.8"
+          },
+          "incomes": {
+            "type": "number",
+            "description": "income",
+            "example": "45000"
+          },
+          "costs": {
+            "type": "number",
+            "description": "Categories",
+            "example": "24500.2"
+          }
+        },
+        "example": {
+          "lastSixMonthsCosts": [
+            {
+              "февраль": 22000.2
+            },
+            {
+              "январь": 2500
+            },
+            {
+              "декабрь": 0
+            },
+            {
+              "ноябрь": 0
+            },
+            {
+              "октябрь": 0
+            },
+            {
+              "сентябрь": 0
+            }
+          ],
+          "lastSixMonthsIncomes": [
+            {
+              "февраль": 45000
+            },
+            {
+              "январь": 0
+            },
+            {
+              "декабрь": 0
+            },
+            {
+              "ноябрь": 0
+            },
+            {
+              "октябрь": 0
+            },
+            {
+              "сентябрь": 0
+            }
+          ],
+          "lastSixMonthsTransaction": [
+            {
+              "_id": "620cd835db7a4287d6089e23",
+              "date": "16.02.2022",
+              "description": "pg",
+              "category": "ЗП",
+              "value": 20000,
+              "owner": "620a1e83b558f640b7ef1f1f",
+              "income": true,
+              "createdAt": "2022-02-16T10:55:49.812Z",
+              "updatedAt": "2022-02-16T10:55:49.812Z"
+            },
+            {
+              "_id": "620cd818db7a4287d6089e15",
+              "date": "16.02.2022",
+              "description": "expence",
+              "category": "Алкоголь",
+              "value": 19750.2,
+              "owner": "620a1e83b558f640b7ef1f1f",
+              "income": false,
+              "createdAt": "2022-02-16T10:55:20.343Z",
+              "updatedAt": "2022-02-16T10:55:20.343Z"
+            }
+          ],
+          "balance": 20499.8,
+          "sumOfIncomes": 45000,
+          "sumOfCosts": 24500.2
+        },
+        "NewBalanceRequest": {
+          "type": "object",
+          "required": [],
+          "properties": {
+            "balance": {
+              "type": "string",
+              "description": "New balance",
+              "example": "200"
+            }
+          }
+        }
+      },
+      "forReportResponse": {
+        "type": "object",
+        "properties": {
+          "transactionsByDescription": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "object",
+                  "properties": {
+                    "description": {
+                      "type": "string",
+                      "description": "description of transaction",
+                      "example": "зп"
+                    },
+                    "category": {
+                      "type": "string",
+                      "description": "category",
+                      "example": "ЗП"
+                    },
+                    "income": {
+                      "type": "boolean",
+                      "description": "Which group does it belong to: costs or income",
+                      "default": "false",
+                      "example": "false"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "lastSixMonthsIncomes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "month": {
+                  "type": "number",
+                  "description": "total for month",
+                  "example": "22000.2"
+                }
+              }
+            }
+          },
+          "lastSixMonthsTransaction": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "description": "Date",
+                  "example": "20201231"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Transaction description",
+                  "example": "Молоко"
+                },
+                "category": {
+                  "type": "string",
+                  "description": "Categories",
+                  "example": "Продукты"
+                },
+                "value": {
+                  "type": "number",
+                  "description": "quantity",
+                  "example": "200"
+                },
+                "owner": {
+                  "type": "string",
+                  "description": "User`s id",
+                  "example": "6207d61a9eb8eb48c71ee728"
+                },
+                "income": {
+                  "type": "boolean",
+                  "description": "Which group does it belong to: costs or income",
+                  "default": "false",
+                  "example": "false"
+                },
+                "id": {
+                  "type": "string",
+                  "description": "User`s id",
+                  "example": "6207d61a9eb8eb48c71ee728"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "description": "Date of creation",
+                  "example": "2022-02-12T15:45:30.553Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "description": "Date of update",
+                  "example": "2022-02-12T15:45:30.553Z"
+                }
+              }
+            }
+          },
+          "total": {
+            "type": "nubmer",
+            "description": "total",
+            "example": "20499.8"
+          },
+          "incomes": {
+            "type": "number",
+            "description": "income",
+            "example": "45000"
+          },
+          "costs": {
+            "type": "number",
+            "description": "Categories",
+            "example": "24500.2"
+          }
+        },
+
+        "NewBalanceRequest": {
+          "type": "object",
+          "required": [],
+          "properties": {
+            "balance": {
+              "type": "string",
+              "description": "New balance",
+              "example": "200"
+            }
+          }
+        }
+      },
+      "NewBalanceResponse": {
         "type": "object",
         "required": [],
         "properties": {
@@ -732,41 +1455,8 @@
             "description": "New balance",
             "example": "200"
           }
+        }
       }
-    },
-    "NewBalanceResponse": {
-        "type": "object",
-        "required": [],
-        "properties": {
-          "balance": {
-            "type": "string",
-            "description": "New balance",
-            "example": "200"
-          }
-      }
-    },
-    "CurrentBalanceResponse": {
-        "type": "object",
-        "required": [],
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "User`s email",
-            "example": "Natascha14257@mail.com"
-          },
-           "id": {
-            "type": "string",
-            "description": "User`s id",
-            "example": "6205afa279aef12bd56844c3"
-          },
-          "balance": {
-            "type": "string",
-            "description": "Current balance",
-            "example": "200"
-          }
-      }
-    }       
-      }           
     },
     "securitySchemes": {
       "Bearer": {
@@ -774,8 +1464,6 @@
         "scheme": "bearer",
         "bearerFormat": "JWT"
       }
-    }    
+    }
   }
-
-
-
+}

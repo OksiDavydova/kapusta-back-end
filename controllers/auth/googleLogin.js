@@ -52,9 +52,9 @@ exports.googleRedirect = async (req, res) => {
     },
   });
 
-  const userEmail = userData.data.email; // test@gmail.com
+  const userEmail = userData.data.email;
 
-  const existUser = await isExistUser(userEmail); //true
+  const existUser = await isExistUser(userEmail);
 
   if (!existUser) {
     await createUser({

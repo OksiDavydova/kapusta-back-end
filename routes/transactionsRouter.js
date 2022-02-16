@@ -74,7 +74,7 @@ router
     wrapperError(getCostsTransactions)
   );
 
-// GET ALL COSTS FOR ALL TIME
+// GET ALL INCOMES FOR ALL TIME
 router
   .route("/incomes")
   .get(wrapperError(guard), wrapperError(getIncomesTransactions));
