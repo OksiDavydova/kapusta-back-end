@@ -26,7 +26,7 @@ const login = async (req, res, next) => {
     );
   }
 
-  const { token } = existUser;
+  const { token, isVerify } = existUser;
 
   jwt.verify(existUser.token, TOKEN_SECRET_KEY, async (err, decoded) => {
     try {
@@ -43,7 +43,7 @@ const login = async (req, res, next) => {
         return res.status(StatusCodes.OK).json({
           message: "Success",
           code: StatusCodes.OK,
-          user: { email, token },
+          user: { email, token, isVerify },
         });
       }
 
@@ -52,7 +52,7 @@ const login = async (req, res, next) => {
       return res.status(StatusCodes.OK).json({
         message: "Success",
         code: StatusCodes.OK,
-        user: { email, token },
+        user: { email, token, isVerify },
       });
     } catch (err) {
       return res.status(StatusCodes.BAD_REQUEST).json({
