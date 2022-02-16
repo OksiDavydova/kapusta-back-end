@@ -1305,17 +1305,6 @@
           "balance": 20499.8,
           "sumOfIncomes": 45000,
           "sumOfCosts": 24500.2
-        },
-        "NewBalanceRequest": {
-          "type": "object",
-          "required": [],
-          "properties": {
-            "balance": {
-              "type": "string",
-              "description": "New balance",
-              "example": "200"
-            }
-          }
         }
       },
       "forReportResponse": {
@@ -1346,104 +1335,47 @@
                       "example": "false"
                     }
                   }
+                },
+                "totalDescription": {
+                  "type": "nubmer",
+                  "description": "totalDescription",
+                  "example": "25000"
                 }
               }
             }
           },
-          "lastSixMonthsIncomes": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "month": {
-                  "type": "number",
-                  "description": "total for month",
-                  "example": "22000.2"
-                }
-              }
-            }
-          },
-          "lastSixMonthsTransaction": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "date": {
-                  "type": "string",
-                  "description": "Date",
-                  "example": "20201231"
-                },
-                "description": {
-                  "type": "string",
-                  "description": "Transaction description",
-                  "example": "Молоко"
-                },
-                "category": {
-                  "type": "string",
-                  "description": "Categories",
-                  "example": "Продукты"
-                },
-                "value": {
-                  "type": "number",
-                  "description": "quantity",
-                  "example": "200"
-                },
-                "owner": {
-                  "type": "string",
-                  "description": "User`s id",
-                  "example": "6207d61a9eb8eb48c71ee728"
-                },
-                "income": {
-                  "type": "boolean",
-                  "description": "Which group does it belong to: costs or income",
-                  "default": "false",
-                  "example": "false"
-                },
-                "id": {
-                  "type": "string",
-                  "description": "User`s id",
-                  "example": "6207d61a9eb8eb48c71ee728"
-                },
-                "createdAt": {
-                  "type": "string",
-                  "description": "Date of creation",
-                  "example": "2022-02-12T15:45:30.553Z"
-                },
-                "updatedAt": {
-                  "type": "string",
-                  "description": "Date of update",
-                  "example": "2022-02-12T15:45:30.553Z"
-                }
-              }
-            }
-          },
-          "total": {
+          "sumOfIncomes": {
             "type": "nubmer",
-            "description": "total",
-            "example": "20499.8"
+            "description": "totalDescription",
+            "example": "25000"
           },
-          "incomes": {
-            "type": "number",
-            "description": "income",
-            "example": "45000"
-          },
-          "costs": {
-            "type": "number",
-            "description": "Categories",
-            "example": "24500.2"
+          "sumOfCosts": {
+            "type": "nubmer",
+            "description": "totalDescription",
+            "example": "25000"
           }
         },
-
-        "NewBalanceRequest": {
-          "type": "object",
-          "required": [],
-          "properties": {
-            "balance": {
-              "type": "string",
-              "description": "New balance",
-              "example": "200"
+        "example": {
+          "transactionsByDescription": [
+            {
+              "_id": {
+                "description": "зп",
+                "category": "ЗП",
+                "income": true
+              },
+              "totalDescription": 25000
+            },
+            {
+              "_id": {
+                "description": "expence",
+                "category": "Алкоголь",
+                "income": false
+              },
+              "totalDescription": 19750.2
             }
-          }
+          ],
+          "sumOfIncomes": 45000,
+          "sumOfCosts": 24500.2
         }
       },
       "NewBalanceResponse": {
