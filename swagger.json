@@ -157,18 +157,18 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddTransactionsRequest"
+                "$ref": "#/components/schemas/AddTransactionRequest"
               }
             }
           }
         },
         "responses": {
-          "200": {
-            "description": "Successful operation",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionsResponse"
+                  "$ref": "#/components/schemas/AddTransactionResponse"
                 }
               }
             }
@@ -1008,7 +1008,7 @@
           }
         }
       },
-      "AddTransactionsRequest": {
+      "AddTransactionRequest": {
         "type": "object",
         "required": ["description", "date", "category", "value", "income"],
         "properties": {
@@ -1020,7 +1020,7 @@
           "description": {
             "type": "string",
             "description": "Transaction description",
-            "example": "Transaction description"
+            "example": "Молоко"
           },
           "category": {
             "type": "string",
@@ -1030,7 +1030,7 @@
           "value": {
             "type": "number",
             "description": "quantity",
-            "example": "2"
+            "example": "100"
           },
           "income": {
             "type": "boolean",
@@ -1038,6 +1038,71 @@
             "default": "false",
             "example": "false"
           }
+        }
+      },
+      "AddTransactionResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "date": {
+              "type": "string",
+              "description": "Date",
+              "example": "20201231"
+            },
+            "description": {
+              "type": "string",
+              "description": "Transaction description",
+              "example": "Молоко"
+            },
+            "category": {
+              "type": "string",
+              "description": "Categories",
+              "example": "Продукты"
+            },
+            "value": {
+              "type": "number",
+              "description": "quantity",
+              "example": "200"
+            },
+            "owner": {
+              "type": "string",
+              "description": "User`s id",
+              "example": "6207d61a9eb8eb48c71ee728"
+            },
+            "income": {
+              "type": "boolean",
+              "description": "Which group does it belong to: costs or income",
+              "default": "false",
+              "example": "false"
+            },
+            "id": {
+              "type": "string",
+              "description": "User`s id",
+              "example": "6207d61a9eb8eb48c71ee728"
+            },
+            "createdAt": {
+              "type": "string",
+              "description": "Date of creation",
+              "example": "2022-02-12T15:45:30.553Z"
+            },
+            "updatedAt": {
+              "type": "string",
+              "description": "Date of update",
+              "example": "2022-02-12T15:45:30.553Z"
+            }
+          }
+        },
+        "example": {
+          "date": "20220215",
+          "description": "Хлеб",
+          "category": "Продукты",
+          "value": 800,
+          "owner": "620a1e83b558f640b7ef1f1f",
+          "income": false,
+          "createdAt": "2022-02-15T11:52:41.103Z",
+          "updatedAt": "2022-02-15T11:52:41.103Z",
+          "id": "620b94090b7f6874c933876f"
         }
       },
       "TransactionsResponse": {
@@ -1376,17 +1441,6 @@
           ],
           "sumOfIncomes": 45000,
           "sumOfCosts": 24500.2
-        }
-      },
-      "NewBalanceResponse": {
-        "type": "object",
-        "required": [],
-        "properties": {
-          "balance": {
-            "type": "string",
-            "description": "New balance",
-            "example": "200"
-          }
         }
       }
     },
